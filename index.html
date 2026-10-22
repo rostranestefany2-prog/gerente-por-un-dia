@@ -814,8 +814,17 @@ footer {
   INNOVATEC EMPRESARIAL S.A. · Simulador educativo de Dirección Administrativa
 </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+const SUPABASE_URL = "https://drzykurxwqdfuthixjup.supabase.co";
+const SUPABASE_KEY = "ESRM2008*122708";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const equipo = {
   maria: { nombre: "María Cabrales", emoji: "👩‍💼" },
   harold: { nombre: "Harold Aguilar", emoji: "🧑‍💼" },
@@ -1369,44 +1378,35 @@ function mostrarResultados() {
 async function enviarResultadoAlServidor(porcentaje) {
   if (resultadoEnviado) return;
 
-  const resultado = {
-    nombre: nombreParticipante,
-    puntuacion: correctas,
+  const datosResultado = {
     maximo: 16,
     porcentaje: porcentaje,
     correctas: correctas,
     incorrectas: incorrectas,
-    respuestas: respuestas,
-    fecha: new Date().toISOString()
+    detalle: respuestas
   };
 
   try {
-    const respuesta = await fetch("/api/resultados", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(resultado)
-    });
+    const { error } = await supabaseClient
+      .from("resultados")
+      .insert({
+        nombre: nombreParticipante,
+        puntuacion: correctas,
+        respuestas: datosResultado
+      });
 
-    if (!respuesta.ok) {
-      throw new Error("No se pudo guardar el resultado");
-    }
+    if (error) throw error;
 
     resultadoEnviado = true;
-    console.log("Resultado enviado correctamente.");
+    console.log("Resultado guardado correctamente.");
+    alert("¡Tu resultado se guardó correctamente!");
   } catch (error) {
     resultadoEnviado = false;
-
-    alert(
-      "No se pudo enviar el resultado al servidor. " +
-      "Comprueba que el servidor esté funcionando y que " +
-      "abriste el simulador desde su dirección web."
-    );
-
-    console.error(error);
+    console.error("Error de Supabase:", error);
+    alert("No se pudo guardar el resultado. Revisa la conexión y los permisos de Supabase.");
   }
 }
+
 function reiniciarJuego() {
   iniciarJuego();
 }
