@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración - Innovatec Empresarial</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      margin: 0;
+      padding: 25px;
+      color: #203047;
+    }
+
+    .contenedor {
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px #0001;
+    }
+
+    h1 { color: #173e70; }
+
+    .resumen {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .tarjeta {
+      background: #edf4ff;
+      padding: 18px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .numero {
+      font-size: 28px;
+      font-weight: bold;
+      display: block;
+      margin-top: 8px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+      margin: 5px 5px 12px 0;
+      background: #174c88;
+      color: white;
+    }
+
+    input, select {
+      padding: 10px;
+      margin: 5px 8px 12px 0;
+      border: 1px solid #ccd5e0;
+      border-radius: 6px;
+    }
+
+    .tabla-contenedor { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #e1e7ef;
+    }
+
+    th { background: #edf4ff; }
+
+    #mensajeVacio {
+      padding: 20px;
+      background: #fff6df;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    #estado { margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <main class="contenedor">
+    <h1>Panel de Administración</h1>
+    <p>Innovatec Empresarial S.A. — Gerente por un día</p>
+
+    <button onclick="cargarResultados()">Actualizar resultados</button>
+    <button onclick="exportarCSV()">Exportar CSV</button>
+    <button onclick="window.print()">Imprimir</button>
+
+    <div id="estado">Conectando con el servidor...</div>
+
+    <section class="resumen">
+      <div class="tarjeta">
+        Total de participantes
+        <span class="numero" id="totalParticipantes">0</span>
+      </div>
+      <div class="tarjeta">
+        Promedio de puntuación
+        <span class="numero" id="promedio">0%</span>
+      </div>
+      <div class="tarjeta">
+        Mejor puntuación
+        <span class="numero" id="mejorPuntuacion">0</span>
+      </div>
+    </section>
+
+    <label for="buscar">Buscar participante:</label>
+    <input id="buscar" type="text"
+      placeholder="Escribe un nombre"
+      oninput="mostrarTabla()">
+
+    <label for="orden">Ordenar:</label>
+    <select id="orden" onchange="mostrarTabla()">
+      <option value="reciente">Más recientes</option>
+      <option value="nombre">Por nombre</option>
+      <option value="mayor">Mayor puntuación</option>
+      <option value="menor">Menor puntuación</option>
+    </select>
+
+    <div id="mensajeVacio" hidden>
+      <strong>No hay resultados registrados.</strong>
+      <p>Completa el cuestionario y pulsa Actualizar resultados.</p>
+    </div>
+
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Participante</th>
+            <th>Puntuación</th>
+            <th>Porcentaje</th>
+            <th>Fecha</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody id="tablaResultados"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    let resultados = [];
+
+    async function cargarResultados() {
+      const estado = document.getElementById("estado");
+      estado.textContent = "Consultando el servidor...";
+
+      try {
+        const respuesta = await fetch("/api/resultados");
+
+        if (!respuesta.ok) {
+          throw new Error("Respuesta del servidor: " + respuesta.status);
+        }
+
+        const datos = await respuesta.json();
+
+        if (!Array.isArray(datos)) {
+          throw new Error("El servidor no devolvió una lista.");
+        }
+
+        resultados = datos;
+        estado.textContent =
+          "Conexión correcta. Resultados recibidos: " + resultados.length;
+
+        actualizarResumen();
+        mostrarTabla();
+      } catch (error) {
+        estado.textContent =
+          "No se pudieron cargar los resultados: " + error.message;
+        console.error(error);
+      }
+    }
+
+    function obtenerPuntos(item) {
+      return Number(item.puntuacion ?? item.correctas ?? item.puntaje ?? 0);
+    }
+
+    function obtenerMaximo(item) {
+      return Number(item.maximo ?? 16);
+    }
+
+    function obtenerNombre(item) {
+      return String(item.nombre || item.participante || "Sin nombre");
+    }
+
+    function obtenerPorcentaje(item) {
+      if (item.porcentaje !== undefined) {
+        return Math.round(Number(item.porcentaje));
+      }
+
+      const maximo = obtenerMaximo(item);
+      return maximo > 0
+        ? Math.round(obtenerPuntos(item) / maximo * 100)
+        : 0;
+    }
+
+    function actualizarResumen() {
+      document.getElementById("totalParticipantes").textContent =
+        resultados.length;
+
+      if (!resultados.length) {
+        document.getElementById("promedio").textContent = "0%";
+        document.getElementById("mejorPuntuacion").textContent = "0";
+        return;
+      }
+
+      const promedio = resultados.reduce(
+        (suma, item) => suma + obtenerPorcentaje(item), 0
+      ) / resultados.length;
+
+      const mejor = Math.max(...resultados.map(obtenerPuntos));
+
+      document.getElementById("promedio").textContent =
+        Math.round(promedio) + "%";
+
+      document.getElementById("mejorPuntuacion").textContent = mejor;
+    }
+
+    function mostrarTabla() {
+      const tbody = document.getElementById("tablaResultados");
+      const mensaje = document.getElementById("mensajeVacio");
+      const busqueda = document.getElementById("buscar")
+        .value.trim().toLowerCase();
+
+      let lista = resultados.filter(item =>
+        obtenerNombre(item).toLowerCase().includes(busqueda)
+      );
+
+      const orden = document.getElementById("orden").value;
+
+      if (orden === "mayor") {
+        lista.sort((a, b) => obtenerPuntos(b) - obtenerPuntos(a));
+      } else if (orden === "menor") {
+        lista.sort((a, b) => obtenerPuntos(a) - obtenerPuntos(b));
+      } else if (orden === "nombre") {
+        lista.sort((a, b) =>
+          obtenerNombre(a).localeCompare(obtenerNombre(b))
+        );
+      } else {
+        lista.sort((a, b) =>
+          new Date(b.fecha || 0) - new Date(a.fecha || 0)
+        );
+      }
+
+      tbody.replaceChildren();
+      mensaje.hidden = lista.length !== 0;
+
+      lista.forEach(item => {
+        const fila = document.createElement("tr");
+
+        const nombre = document.createElement("td");
+        nombre.textContent = obtenerNombre(item);
+
+        const puntos = document.createElement("td");
+        puntos.textContent =
+          obtenerPuntos(item) + " / " + obtenerMaximo(item);
+
+        const porcentaje = document.createElement("td");
+        porcentaje.textContent = obtenerPorcentaje(item) + "%";
+
+        const fecha = document.createElement("td");
+        const fechaValor = item.fecha ? new Date(item.fecha) : null;
+        fecha.textContent = fechaValor && !isNaN(fechaValor)
+          ? fechaValor.toLocaleString("es-NI")
+          : "No disponible";
+
+        const detalle = document.createElement("td");
+        const boton = document.createElement("button");
+        boton.textContent = "Ver respuestas";
+        boton.onclick = () => verDetalle(item);
+        detalle.appendChild(boton);
+
+        fila.append(nombre, puntos, porcentaje, fecha, detalle);
+        tbody.appendChild(fila);
+      });
+    }
+
+    function verDetalle(item) {
+      const detalle = item.respuestas || [];
+      alert(
+        "Participante: " + obtenerNombre(item) + "\n" +
+        "Puntuación: " + obtenerPuntos(item) +
+        " de " + obtenerMaximo(item) + "\n\n" +
+        "Respuestas:\n" + JSON.stringify(detalle, null, 2)
+      );
+    }
+
+    function exportarCSV() {
+      if (!resultados.length) {
+        alert("Todavía no hay resultados para exportar.");
+        return;
+      }
+
+      const filas = [
+        ["Participante", "Puntuación", "Máximo", "Porcentaje", "Fecha"],
+        ...resultados.map(item => [
+          obtenerNombre(item),
+          obtenerPuntos(item),
+          obtenerMaximo(item),
+          obtenerPorcentaje(item) + "%",
+          item.fecha || ""
+        ])
+      ];
+
+      const contenido = filas.map(fila =>
+        fila.map(valor =>
+          '"' + String(valor).replace(/"/g, '""') + '"'
+        ).join(";")
+      ).join("\r\n");
+
+      const archivo = new Blob(
+        ["\uFEFF" + contenido],
+        { type: "text/csv;charset=utf-8;" }
+      );
+
+      const url = URL.createObjectURL(archivo);
+      const enlace = document.createElement("a");
+      enlace.href = url;
+      enlace.download = "resultados_innovatec.csv";
+      enlace.click();
+      URL.revokeObjectURL(url);
+    }
+
+    cargarResultados();
+  </script>
+</body>
+</html>

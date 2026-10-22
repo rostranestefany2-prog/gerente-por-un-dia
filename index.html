@@ -1,0 +1,1415 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerente por un día | Innovatec Empresarial S.A.</title>
+
+<style>
+:root {
+  --azul: #17365d;
+  --azul-claro: #2864a8;
+  --dorado: #f1bd59;
+  --fondo: #f2f5fa;
+  --blanco: #ffffff;
+  --texto: #263449;
+  --gris: #64748b;
+  --verde: #16845d;
+  --rojo: #c43d43;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 17px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+button:hover {
+  filter: brightness(.94);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.primario {
+  background: var(--azul-claro);
+  color: white;
+}
+
+.secundario {
+  background: #e5ebf3;
+  color: var(--azul);
+}
+
+.dorado {
+  background: var(--dorado);
+  color: var(--azul);
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px;
+}
+
+header {
+  background: #101d32;
+  color: white;
+  padding: 17px 22px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  background: var(--dorado);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.marca h2 {
+  color: white;
+  font-size: 17px;
+  margin: 0 0 5px;
+}
+
+.marca small {
+  color: #cbd5e1;
+}
+
+.estado {
+  text-align: right;
+  font-size: 12px;
+  color: #dbeafe;
+}
+
+.pantalla {
+  display: none;
+  margin-top: 20px;
+}
+
+.pantalla.activa {
+  display: block;
+  animation: aparecer .25s ease;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.portada {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 28px;
+  align-items: center;
+  padding: clamp(24px, 4vw, 50px);
+  background: linear-gradient(120deg, white 55%, #eaf3ff);
+  border: 1px solid #e0e8f3;
+  border-radius: 24px;
+  min-height: 390px;
+}
+
+.etiqueta {
+  color: var(--azul-claro);
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.portada h1 {
+  color: #101d32;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05;
+  margin: 18px 0;
+}
+
+.portada p {
+  color: var(--gris);
+  line-height: 1.8;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.ilustracion {
+  position: relative;
+  min-height: 285px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #cce5ff, #edf6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sol {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  font-size: 35px;
+}
+
+.edificio {
+  width: 76%;
+  height: 205px;
+  background: white;
+  border-radius: 12px 12px 5px 5px;
+  border-bottom: 8px solid #6899c7;
+  box-shadow: 0 12px 25px #17365d15;
+  position: relative;
+}
+
+.nombre-edificio {
+  text-align: center;
+  font-weight: bold;
+  color: var(--azul);
+  letter-spacing: 2px;
+  padding-top: 22px;
+}
+
+.ventanas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 18px 12% 0;
+}
+
+.ventanas span {
+  height: 36px;
+  background: #83c6ee;
+  border: 4px solid #d7ebfa;
+}
+
+.puerta {
+  position: absolute;
+  bottom: 0;
+  left: 43%;
+  width: 15%;
+  height: 50px;
+  background: #175ca3;
+  border-radius: 5px 5px 0 0;
+}
+
+.planta {
+  position: absolute;
+  left: 5%;
+  bottom: 12px;
+  font-size: 37px;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 17px;
+}
+
+.tarjeta, .panel {
+  background: white;
+  border: 1px solid #e1e8f1;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 5px 18px #17365d08;
+}
+
+.tarjeta .icono {
+  font-size: 26px;
+}
+
+.tarjeta h3 {
+  color: var(--azul);
+}
+
+.tarjeta p {
+  color: var(--gris);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+h2, h3 {
+  color: var(--azul);
+}
+
+.subtitulo {
+  color: var(--gris);
+  line-height: 1.7;
+}
+
+.personajes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.personaje {
+  background: #f8fafc;
+  border: 1px solid #e1e8f1;
+  border-radius: 13px;
+  padding: 17px;
+}
+
+.personaje .emoji {
+  font-size: 42px;
+}
+
+.personaje h3 {
+  margin-bottom: 5px;
+}
+
+.personaje p {
+  color: var(--gris);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.etiqueta-azul {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #e2edfc;
+  color: var(--azul-claro);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progreso {
+  height: 9px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+#barraProgreso {
+  height: 100%;
+  width: 0;
+  background: var(--verde);
+  transition: width .3s;
+}
+
+.escena {
+  padding: 17px;
+  background: #eaf3ff;
+  border: 1px solid #d5e5f6;
+  border-radius: 15px;
+  margin-bottom: 17px;
+}
+
+.escenario {
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  gap: 8px;
+  min-height: 130px;
+  border-bottom: 7px solid #91b0ce;
+}
+
+.actor {
+  flex: 1;
+  text-align: center;
+  padding: 7px 1px;
+}
+
+.actor span {
+  display: block;
+  font-size: clamp(34px, 5vw, 52px);
+}
+
+.actor strong {
+  display: block;
+  font-size: 11px;
+  color: var(--azul);
+  margin-top: 5px;
+}
+
+.dialogo {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  line-height: 1.7;
+  margin-top: 13px;
+}
+
+.dialogo p {
+  margin: 0 0 10px;
+}
+
+.dialogo p:last-child {
+  margin-bottom: 0;
+}
+
+.pregunta {
+  font-size: 19px;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.opciones {
+  display: grid;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.opcion {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ccd8e7;
+  border-radius: 11px;
+  background: white;
+  color: var(--texto);
+  line-height: 1.55;
+}
+
+.letra {
+  display: grid;
+  place-items: center;
+  min-width: 29px;
+  height: 29px;
+  border-radius: 7px;
+  background: #e6eef9;
+  color: var(--azul-claro);
+  font-weight: bold;
+}
+
+.opcion.seleccionada {
+  border: 2px solid var(--azul-claro);
+  background: #edf5ff;
+}
+
+.opcion.correcta {
+  border: 2px solid var(--verde);
+  background: #e6f8ef;
+}
+
+.opcion.incorrecta {
+  border: 2px solid var(--rojo);
+  background: #fff0f0;
+}
+
+.opcion:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.retroalimentacion {
+  display: none;
+  margin-top: 14px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #eef6ff;
+  border-left: 4px solid var(--azul-claro);
+  line-height: 1.65;
+}
+
+.retroalimentacion.visible {
+  display: block;
+}
+
+.teoria {
+  background: #fff7e7;
+  border-left: 4px solid var(--dorado);
+  padding: 14px;
+  border-radius: 9px;
+  line-height: 1.7;
+  margin-top: 15px;
+}
+
+.nota {
+  color: var(--gris);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.resultado {
+  text-align: center;
+  padding: 28px;
+}
+
+.trofeo {
+  font-size: 65px;
+}
+
+.puntos {
+  font-size: 38px;
+  font-weight: bold;
+  color: var(--verde);
+  margin: 12px;
+}
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.numero {
+  background: #f5f8fc;
+  padding: 17px 8px;
+  border-radius: 12px;
+}
+
+.numero strong {
+  display: block;
+  font-size: 26px;
+  color: var(--azul);
+  margin-bottom: 6px;
+}
+
+.detalle-respuesta {
+  text-align: left;
+  padding: 14px;
+  border: 1px solid #e1e8f1;
+  border-radius: 11px;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.bien {
+  color: var(--verde);
+  font-weight: bold;
+}
+
+.mal {
+  color: var(--rojo);
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: var(--gris);
+  font-size: 12px;
+  padding: 20px 0 5px;
+}
+
+@media(max-width:780px) {
+  .portada {
+    grid-template-columns: 1fr;
+  }
+
+  .ilustracion {
+    min-height: 240px;
+  }
+
+  .tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+  .resumen {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    align-items: flex-start;
+  }
+
+  .estado {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="contenedor">
+
+<header>
+  <div class="marca">
+    <div class="logo">I</div>
+    <div>
+      <h2>INNOVATEC EMPRESARIAL S.A.</h2>
+      <small>Simulador de Dirección Administrativa</small>
+    </div>
+  </div>
+  <div class="estado">
+    <strong>GERENTE POR UN DÍA</strong>
+    Aprende tomando decisiones
+  </div>
+</header>
+
+<!-- PORTADA -->
+<section id="portada" class="pantalla activa">
+  <div class="portada">
+    <div>
+      <div class="etiqueta">SIMULADOR EMPRESARIAL INTERACTIVO</div>
+      <h1>Gerente<br>por un día</h1>
+      <p>
+        ¡Bienvenido a Innovatec Empresarial S.A.! Asume el papel de un
+        gerente, analiza situaciones reales del entorno laboral y elige
+        las mejores decisiones para resolver problemas administrativos.
+      </p>
+      <div class="botones">
+        <button class="primario" onclick="mostrarPersonajes()">
+          Comenzar simulación →
+        </button>
+        <button class="secundario" onclick="mostrarIntroduccion()">
+          ¿Cómo funciona?
+        </button>
+      </div>
+    </div>
+
+    <div class="ilustracion">
+      <div class="sol">☀️</div>
+      <div class="planta">🪴</div>
+      <div class="edificio">
+        <div class="nombre-edificio">INNOVATEC</div>
+        <div class="ventanas">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <div class="puerta"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <div class="icono">👥</div>
+      <h3>Dirige un equipo</h3>
+      <p>Conoce a los trabajadores y aprende a coordinar sus actividades.</p>
+    </div>
+    <div class="tarjeta">
+      <div class="icono">🧠</div>
+      <h3>Toma decisiones</h3>
+      <p>Resuelve conflictos y aplica principios de dirección administrativa.</p>
+    </div>
+    <div class="tarjeta">
+      <div class="icono">📊</div>
+      <h3>Evalúa tus resultados</h3>
+      <p>Recibe una puntuación y aprende de tus decisiones correctas e incorrectas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTRODUCCIÓN -->
+<section id="introduccion" class="pantalla">
+  <div class="panel">
+    <span class="etiqueta-azul">INSTRUCCIONES</span>
+    <h2>¿Cómo funciona el simulador?</h2>
+    <p class="subtitulo">
+      Participarás en cuatro casos relacionados con la dirección
+      administrativa de una empresa.
+    </p>
+    <ol style="line-height:2">
+      <li>Conoce a los personajes de Innovatec Empresarial S.A.</li>
+      <li>Lee cada situación y los diálogos de los trabajadores.</li>
+      <li>Selecciona una de las cuatro opciones para responder cada pregunta.</li>
+      <li>Lee la explicación que aparece después de responder.</li>
+      <li>Completa los cuatro casos y consulta tu calificación final.</li>
+    </ol>
+    <div class="teoria">
+      <strong>Importante:</strong> cada pregunta vale un punto.
+      Hay cuatro preguntas por caso, para un total de 16 puntos.
+      El simulador te mostrará cuáles respuestas fueron correctas
+      y cuáles debes mejorar.
+    </div>
+    <div class="botones">
+      <button class="primario" onclick="mostrarPersonajes()">Conocer al equipo →</button>
+      <button class="secundario" onclick="mostrarPantalla('portada')">Volver</button>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAJES -->
+<section id="personajes" class="pantalla">
+  <div class="panel">
+    <span class="etiqueta-azul">NUESTRO EQUIPO</span>
+    <h2>Conoce a los trabajadores</h2>
+    <p class="subtitulo">
+      Estas son las personas que participarán en los casos administrativos.
+    </p>
+
+    <div class="personajes">
+      <div class="personaje">
+        <div class="emoji">👩‍💼</div>
+        <h3>María Cabrales</h3>
+        <span class="etiqueta-azul">Gerente general</span>
+        <p>Coordina al personal, escucha al equipo y toma decisiones para alcanzar los objetivos.</p>
+      </div>
+
+      <div class="personaje">
+        <div class="emoji">🧑‍💼</div>
+        <h3>Harold Aguilar</h3>
+        <span class="etiqueta-azul">Supervisor de ventas</span>
+        <p>Supervisa las tareas del equipo de ventas y revisa el cumplimiento de las metas.</p>
+      </div>
+
+      <div class="personaje">
+        <div class="emoji">👩‍💻</div>
+        <h3>Estefany Rostrán</h3>
+        <span class="etiqueta-azul">Recursos Humanos</span>
+        <p>Apoya la resolución de conflictos y promueve un ambiente laboral respetuoso.</p>
+      </div>
+
+      <div class="personaje">
+        <div class="emoji">🧑‍💻</div>
+        <h3>Axel Aburto</h3>
+        <span class="etiqueta-azul">Trabajador de ventas</span>
+        <p>Atiende clientes, prepara pedidos y colabora con sus compañeros.</p>
+      </div>
+
+      <div class="personaje">
+        <div class="emoji">👩‍💼</div>
+        <h3>Madelin Acevedo</h3>
+        <span class="etiqueta-azul">Trabajadora de ventas</span>
+        <p>Atiende clientes, registra información y prepara informes de ventas.</p>
+      </div>
+
+      <div class="personaje">
+        <div class="emoji">👩‍💻</div>
+        <h3>Dayana Lozano</h3>
+        <span class="etiqueta-azul">Asistente administrativa</span>
+        <p>Organiza documentos, comunica información y apoya las actividades de la empresa.</p>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button class="primario" onclick="iniciarJuego()">Comenzar los casos →</button>
+      <button class="secundario" onclick="mostrarPantalla('portada')">Volver a la portada</button>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULACIÓN -->
+<section id="juego" class="pantalla">
+  <div class="panel">
+    <div class="fila">
+      <span id="etiquetaCaso" class="etiqueta-azul">CASO 1 DE 4</span>
+      <span id="contadorPregunta" class="nota">Pregunta 1 de 4</span>
+    </div>
+
+    <div class="progreso">
+      <div id="barraProgreso"></div>
+    </div>
+
+    <h2 id="tituloCaso"></h2>
+    <p id="descripcionCaso" class="subtitulo"></p>
+
+    <div class="escena">
+      <div class="escenario" id="escenario"></div>
+      <div class="dialogo" id="dialogo"></div>
+    </div>
+
+    <div class="fila">
+      <span class="etiqueta-azul">TU DECISIÓN COMO GERENTE</span>
+      <span class="nota">Selecciona una opción</span>
+    </div>
+
+    <h3 id="pregunta" class="pregunta"></h3>
+    <div id="opciones" class="opciones"></div>
+    <div id="retroalimentacion" class="retroalimentacion"></div>
+
+    <div class="teoria" id="teoriaCaso"></div>
+
+    <div class="botones">
+      <button id="comprobar" class="primario" onclick="comprobarRespuesta()" disabled>
+        Comprobar respuesta
+      </button>
+      <button id="continuar" class="dorado" onclick="siguientePregunta()" disabled>
+        Siguiente pregunta →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" class="pantalla">
+  <div class="panel resultado">
+    <div class="trofeo">🏆</div>
+    <span class="etiqueta-azul">SIMULACIÓN COMPLETADA</span>
+    <h2 id="saludoFinal">¡Buen trabajo!</h2>
+    <p>Este es el resultado de tus decisiones en Innovatec Empresarial S.A.</p>
+
+    <div class="puntos" id="puntuacionFinal">0 / 16</div>
+    <div id="mensajeFinal" class="subtitulo"></div>
+
+    <div class="resumen">
+      <div class="numero">
+        <strong id="totalCorrectas">0</strong>
+        Respuestas correctas
+      </div>
+      <div class="numero">
+        <strong id="totalIncorrectas">0</strong>
+        Respuestas incorrectas
+      </div>
+      <div class="numero">
+        <strong id="porcentajeFinal">0%</strong>
+        Porcentaje obtenido
+      </div>
+    </div>
+
+    <h2 style="text-align:left">Revisión de tus respuestas</h2>
+    <div id="revision"></div>
+
+    <div class="teoria" style="text-align:left">
+      <strong>Conclusión:</strong>
+      La dirección administrativa requiere liderazgo, motivación,
+      comunicación efectiva y capacidad para tomar decisiones.
+      Un buen gerente escucha a sus trabajadores, organiza los recursos,
+      resuelve los problemas y evalúa los resultados para mejorar
+      continuamente el desempeño de la empresa.
+    </div>
+
+    <div class="botones" style="justify-content:center">
+      <button class="primario" onclick="reiniciarJuego()">Volver a realizar la simulación</button>
+      <button class="secundario" onclick="mostrarPantalla('portada')">Volver a la portada</button>
+      <button class="secundario" onclick="window.print()">Imprimir resultados</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  INNOVATEC EMPRESARIAL S.A. · Simulador educativo de Dirección Administrativa
+</footer>
+</div>
+
+<script>
+const equipo = {
+  maria: { nombre: "María Cabrales", emoji: "👩‍💼" },
+  harold: { nombre: "Harold Aguilar", emoji: "🧑‍💼" },
+  estefany: { nombre: "Estefany Rostrán", emoji: "👩‍💻" },
+  axel: { nombre: "Axel Aburto", emoji: "🧑‍💻" },
+  madelin: { nombre: "Madelin Acevedo", emoji: "👩‍💼" },
+  dayana: { nombre: "Dayana Lozano", emoji: "👩‍💻" }
+};
+
+const casos = [
+  {
+    titulo: "Caso 1: Conflicto entre trabajadores",
+    descripcion: "Dos integrantes del equipo tienen un desacuerdo que está afectando el ambiente laboral.",
+    teoria: "Principio administrativo: comunicación, liderazgo y resolución de conflictos. La gerente debe escuchar a las partes, identificar las causas y buscar acuerdos justos.",
+    dialogos: [
+      ["Axel", "Madelin no me está ayudando con los pedidos. Tengo demasiado trabajo."],
+      ["Madelin", "Yo también tengo tareas asignadas. Siento que Axel no reconoce mi esfuerzo."],
+      ["Harold", "La discusión está afectando la atención de los clientes."],
+      ["María", "Necesitamos resolver el problema sin perjudicar al equipo."]
+    ],
+    preguntas: [
+      {
+        texto: "¿Qué debería hacer María primero para resolver el conflicto?",
+        opciones: [
+          "Sancionar a ambos sin escuchar sus versiones.",
+          "Escuchar a ambos trabajadores e identificar las causas del desacuerdo.",
+          "Ignorar la discusión y continuar trabajando.",
+          "Despedir al trabajador que se queje primero."
+        ],
+        correcta: 1,
+        explicacion: "Escuchar a ambas partes permite conocer los hechos, comprender el problema y tomar una decisión justa."
+      },
+      {
+        texto: "Después de escuchar a los trabajadores, ¿qué acción sería más adecuada?",
+        opciones: [
+          "Permitir que el conflicto continúe.",
+          "Asignar todas las tareas a una sola persona.",
+          "Dialogar con ambos y acordar una distribución clara de las tareas.",
+          "Evitar hablar del problema para no crear incomodidad."
+        ],
+        correcta: 2,
+        explicacion: "Un acuerdo claro sobre las responsabilidades reduce los malentendidos y ayuda a trabajar en equipo."
+      },
+      {
+        texto: "¿Qué papel debe cumplir Recursos Humanos en esta situación?",
+        opciones: [
+          "Apoyar la mediación y promover el respeto entre los trabajadores.",
+          "Elegir un favorito y defenderlo siempre.",
+          "Aumentar el conflicto para conocer la reacción del equipo.",
+          "Ocultar el problema a la gerencia."
+        ],
+        correcta: 0,
+        explicacion: "Recursos Humanos puede facilitar el diálogo, la mediación y el cumplimiento de las normas de convivencia."
+      },
+      {
+        texto: "¿Cómo puede María comprobar si la solución funcionó?",
+        opciones: [
+          "Suponer que todo está resuelto.",
+          "Dejar de comunicarse con los trabajadores.",
+          "Cambiar a todo el personal de área inmediatamente.",
+          "Dar seguimiento al acuerdo y revisar el ambiente laboral."
+        ],
+        correcta: 3,
+        explicacion: "El seguimiento permite verificar si el acuerdo se cumple y si la situación ha mejorado."
+      }
+    ]
+  },
+
+  {
+    titulo: "Caso 2: Falta de motivación",
+    descripcion: "El equipo de ventas ha perdido entusiasmo y sus integrantes sienten que su esfuerzo no se valora.",
+    teoria: "Principio administrativo: motivación y liderazgo. Reconocer los logros, escuchar al equipo y ofrecer oportunidades de mejora ayuda a fortalecer el compromiso laboral.",
+    dialogos: [
+      ["Harold", "Las ventas han bajado y noto que el equipo está desanimado."],
+      ["Axel", "Cumplimos con nuestras tareas, pero casi nunca recibimos reconocimiento."],
+      ["Madelin", "También necesitamos orientación para mejorar nuestros resultados."],
+      ["María", "Debemos encontrar una manera de recuperar la motivación."]
+    ],
+    preguntas: [
+      {
+        texto: "¿Qué debería hacer María para conocer las causas de la desmotivación?",
+        opciones: [
+          "Aumentar las tareas sin consultar al equipo.",
+          "Escuchar a los trabajadores y conocer sus necesidades.",
+          "Culpar al personal por los resultados.",
+          "Eliminar todas las reuniones."
+        ],
+        correcta: 1,
+        explicacion: "Escuchar al equipo ayuda a identificar las causas de la desmotivación y permite tomar decisiones apropiadas."
+      },
+      {
+        texto: "¿Cuál es una buena forma de reconocer el esfuerzo del personal?",
+        opciones: [
+          "Reconocer solamente los errores.",
+          "Comparar constantemente a los trabajadores para avergonzarlos.",
+          "Valorar los logros y ofrecer retroalimentación constructiva.",
+          "Evitar mencionar los buenos resultados."
+        ],
+        correcta: 2,
+        explicacion: "El reconocimiento justo y la retroalimentación constructiva pueden fortalecer el compromiso y la confianza."
+      },
+      {
+        texto: "¿Qué acción puede ayudar a mejorar el desempeño de ventas?",
+        opciones: [
+          "Proporcionar capacitación y establecer metas claras y alcanzables.",
+          "Ocultar los objetivos de la empresa.",
+          "Cambiar las metas todos los días sin explicación.",
+          "Prohibir que el equipo haga preguntas."
+        ],
+        correcta: 0,
+        explicacion: "La capacitación y las metas claras permiten que los trabajadores sepan qué deben lograr y cómo mejorar."
+      },
+      {
+        texto: "¿Cómo puede Harold evaluar si la motivación está mejorando?",
+        opciones: [
+          "Basándose únicamente en rumores.",
+          "Sin revisar los resultados.",
+          "Preguntando solo a un trabajador.",
+          "Observando el desempeño, escuchando al equipo y revisando las metas."
+        ],
+        correcta: 3,
+        explicacion: "Combinar indicadores de desempeño con la opinión del equipo permite evaluar mejor los resultados."
+      }
+    ]
+  },
+
+  {
+    titulo: "Caso 3: Mala comunicación",
+    descripcion: "Una instrucción importante no llegó a todos los trabajadores y se cometieron errores en los pedidos.",
+    teoria: "Principio administrativo: comunicación efectiva y coordinación. Las instrucciones deben ser claras, oportunas y comprensibles, y es necesario confirmar que fueron recibidas.",
+    dialogos: [
+      ["Dayana", "Envié el horario nuevo, pero algunos trabajadores no lo recibieron."],
+      ["Axel", "Yo no sabía que el horario había cambiado."],
+      ["Harold", "Por eso se prepararon pedidos con información incorrecta."],
+      ["María", "Necesitamos mejorar la manera en que compartimos la información."]
+    ],
+    preguntas: [
+      {
+        texto: "¿Cuál debería ser la primera acción para resolver el problema?",
+        opciones: [
+          "Culpar a Dayana sin investigar lo ocurrido.",
+          "Cancelar todas las operaciones de la empresa.",
+          "Aclarar las instrucciones y confirmar quiénes recibieron la información.",
+          "Continuar trabajando con los datos incorrectos."
+        ],
+        correcta: 2,
+        explicacion: "Aclarar la información y confirmar su recepción ayuda a corregir los errores y evitar que se repitan."
+      },
+      {
+        texto: "¿Qué herramienta puede ayudar a organizar los avisos internos?",
+        opciones: [
+          "Un canal oficial de comunicación y un registro de instrucciones.",
+          "Mensajes diferentes y contradictorios para cada trabajador.",
+          "Rumores transmitidos entre compañeros.",
+          "Eliminar todos los avisos escritos."
+        ],
+        correcta: 0,
+        explicacion: "Un canal oficial y un registro de instrucciones facilitan que el personal consulte información confiable."
+      },
+      {
+        texto: "¿Cómo debería comunicar María un cambio importante de horario?",
+        opciones: [
+          "Informarlo solamente a sus trabajadores favoritos.",
+          "Esperar hasta que ocurra un error.",
+          "Comunicarlo sin indicar la fecha de aplicación.",
+          "Explicar el cambio claramente y confirmar que el equipo lo entendió."
+        ],
+        correcta: 3,
+        explicacion: "La comunicación clara, oportuna y confirmada reduce la confusión y mejora la coordinación."
+      },
+      {
+        texto: "¿Qué debería hacerse para evitar futuros errores en los pedidos?",
+        opciones: [
+          "Dejar de registrar los pedidos.",
+          "Establecer un procedimiento para comunicar y verificar los datos.",
+          "Permitir que cada trabajador invente sus instrucciones.",
+          "Evitar revisar la información."
+        ],
+        correcta: 1,
+        explicacion: "Un procedimiento compartido para comunicar y verificar los datos ayuda a reducir los errores."
+      }
+    ]
+  },
+
+  {
+    titulo: "Caso 4: Disminución de las ventas",
+    descripcion: "La empresa no está alcanzando sus metas de ventas y la gerencia necesita tomar decisiones.",
+    teoria: "Principio administrativo: planeación, dirección y control. Para mejorar las ventas, la empresa debe analizar información, establecer objetivos, orientar al equipo y evaluar los resultados.",
+    dialogos: [
+      ["Harold", "Este mes no alcanzamos la meta de ventas."],
+      ["Madelin", "Varios clientes preguntan por productos que no tenemos disponibles."],
+      ["Dayana", "Los informes muestran que algunos productos tienen mayor demanda que otros."],
+      ["María", "Debemos analizar la información y establecer un plan de mejora."]
+    ],
+    preguntas: [
+      {
+        texto: "¿Qué debería hacer María antes de decidir cómo aumentar las ventas?",
+        opciones: [
+          "Reducir todos los precios sin analizar los costos.",
+          "Cambiar al personal de inmediato.",
+          "Revisar los informes de ventas, las necesidades de los clientes y las causas del descenso.",
+          "Ignorar los informes y esperar al siguiente mes."
+        ],
+        correcta: 2,
+        explicacion: "Analizar la información ayuda a identificar las causas del problema y a elegir acciones basadas en evidencia."
+      },
+      {
+        texto: "¿Qué debería hacer la empresa ante la falta de productos solicitados?",
+        opciones: [
+          "Analizar la demanda y coordinar el abastecimiento de los productos necesarios.",
+          "Dejar de atender a esos clientes.",
+          "Prometer productos sin comprobar su disponibilidad.",
+          "Ocultar la falta de inventario."
+        ],
+        correcta: 0,
+        explicacion: "La coordinación entre ventas e inventario ayuda a responder a la demanda de los clientes de manera realista."
+      },
+      {
+        texto: "¿Cómo puede María orientar al equipo para mejorar las ventas?",
+        opciones: [
+          "Evitar que los trabajadores reciban capacitación.",
+          "Establecer metas imposibles sin explicar cómo lograrlas.",
+          "Dejar al equipo sin orientación.",
+          "Establecer metas claras, capacitar al personal y acompañar su trabajo."
+        ],
+        correcta: 3,
+        explicacion: "Las metas claras, la capacitación y el acompañamiento permiten mejorar las habilidades y orientar los esfuerzos."
+      },
+      {
+        texto: "¿Cómo debe evaluar la gerencia si el plan de mejora funcionó?",
+        opciones: [
+          "Decidirlo sin consultar ningún dato.",
+          "Comparar los resultados obtenidos con las metas establecidas y ajustar el plan.",
+          "Revisar únicamente las opiniones de una persona.",
+          "Dejar de medir las ventas."
+        ],
+        correcta: 1,
+        explicacion: "Comparar los resultados con las metas permite reconocer avances, detectar dificultades y corregir el plan."
+      }
+    ]
+  }
+];
+
+let casoActual = 0;
+let preguntaActual = 0;
+let seleccion = null;
+let respondida = false;
+let nombreParticipante = "";
+let respuestas = [];
+let correctas = 0;
+let incorrectas = 0;
+let resultadoEnviado = false;
+
+function mostrarPantalla(id) {
+  document.querySelectorAll(".pantalla").forEach(p => {
+    p.classList.remove("activa");
+  });
+  document.getElementById(id).classList.add("activa");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function mostrarIntroduccion() {
+  mostrarPantalla("introduccion");
+}
+
+function mostrarPersonajes() {
+  mostrarPantalla("personajes");
+}
+
+function iniciarJuego() {
+  nombreParticipante = prompt("Escribe tu nombre para comenzar:") || "";
+  nombreParticipante = nombreParticipante.trim();
+
+  if (!nombreParticipante) {
+    alert("Debes escribir tu nombre para iniciar la simulación.");
+    return;
+  }
+
+  casoActual = 0;
+  preguntaActual = 0;
+  seleccion = null;
+  respondida = false;
+  respuestas = [];
+  correctas = 0;
+  incorrectas = 0;
+resultadoEnviado = false;
+
+  mostrarPantalla("juego");
+  renderizarPregunta();
+}
+
+function renderizarPregunta() {
+  const caso = casos[casoActual];
+  const pregunta = caso.preguntas[preguntaActual];
+
+  seleccion = null;
+  respondida = false;
+
+  document.getElementById("etiquetaCaso").textContent =
+    `CASO ${casoActual + 1} DE ${casos.length}`;
+
+  document.getElementById("contadorPregunta").textContent =
+    `Pregunta ${preguntaActual + 1} de ${caso.preguntas.length}`;
+
+  document.getElementById("barraProgreso").style.width =
+    `${(respuestas.length / 16) * 100}%`;
+
+  document.getElementById("tituloCaso").textContent = caso.titulo;
+  document.getElementById("descripcionCaso").textContent = caso.descripcion;
+  document.getElementById("pregunta").textContent = pregunta.texto;
+
+  const escenario = document.getElementById("escenario");
+  escenario.innerHTML = "";
+
+  const participantes = [
+    ["maria", "María"],
+    ["harold", "Harold"],
+    ["estefany", "Estefany"],
+    ["axel", "Axel"],
+    ["madelin", "Madelin"],
+    ["dayana", "Dayana"]
+  ];
+
+  participantes.forEach(([id, nombre]) => {
+    const div = document.createElement("div");
+    div.className = "actor";
+    div.innerHTML =
+      `<span>${equipo[id].emoji}</span><strong>${nombre}</strong>`;
+    escenario.appendChild(div);
+  });
+
+  const dialogo = document.getElementById("dialogo");
+  dialogo.innerHTML = "";
+
+  caso.dialogos.forEach(([persona, texto]) => {
+    const p = document.createElement("p");
+    const strong = document.createElement("strong");
+    strong.textContent = persona + ": ";
+    p.appendChild(strong);
+    p.appendChild(document.createTextNode(texto));
+    dialogo.appendChild(p);
+  });
+
+  const opciones = document.getElementById("opciones");
+  opciones.innerHTML = "";
+
+  pregunta.opciones.forEach((texto, indice) => {
+    const boton = document.createElement("button");
+    boton.className = "opcion";
+
+    const letra = document.createElement("span");
+    letra.className = "letra";
+    letra.textContent = String.fromCharCode(65 + indice);
+
+    const contenido = document.createElement("span");
+    contenido.textContent = texto;
+
+    boton.appendChild(letra);
+    boton.appendChild(contenido);
+    boton.addEventListener("click", () => elegirOpcion(indice, boton));
+
+    opciones.appendChild(boton);
+  });
+
+  const retro = document.getElementById("retroalimentacion");
+  retro.className = "retroalimentacion";
+  retro.innerHTML = "";
+
+  document.getElementById("teoriaCaso").innerHTML =
+    "<strong>Concepto administrativo:</strong> " + caso.teoria;
+
+  document.getElementById("comprobar").disabled = true;
+  document.getElementById("continuar").disabled = true;
+  document.getElementById("comprobar").style.display = "inline-block";
+  document.getElementById("continuar").textContent = "Siguiente pregunta →";
+}
+
+function elegirOpcion(indice, boton) {
+  if (respondida) return;
+
+  seleccion = indice;
+
+  document.querySelectorAll(".opcion").forEach(op => {
+    op.classList.remove("seleccionada");
+  });
+
+  boton.classList.add("seleccionada");
+  document.getElementById("comprobar").disabled = false;
+}
+
+function comprobarRespuesta() {
+  if (seleccion === null || respondida) return;
+
+  respondida = true;
+
+  const caso = casos[casoActual];
+  const pregunta = caso.preguntas[preguntaActual];
+  const acerto = seleccion === pregunta.correcta;
+
+  if (acerto) {
+    correctas++;
+  } else {
+    incorrectas++;
+  }
+
+  respuestas.push({
+    caso: caso.titulo,
+    pregunta: pregunta.texto,
+    seleccion: seleccion,
+    respuestaElegida: pregunta.opciones[seleccion],
+    correcta: pregunta.correcta,
+    respuestaCorrecta: pregunta.opciones[pregunta.correcta],
+    acerto: acerto,
+    explicacion: pregunta.explicacion
+  });
+
+  document.querySelectorAll(".opcion").forEach((boton, indice) => {
+    boton.disabled = true;
+
+    if (indice === pregunta.correcta) {
+      boton.classList.add("correcta");
+    }
+
+    if (indice === seleccion && !acerto) {
+      boton.classList.add("incorrecta");
+    }
+  });
+
+  const retro = document.getElementById("retroalimentacion");
+  retro.className = "retroalimentacion visible";
+
+  const titulo = acerto ? "¡Respuesta correcta!" : "Respuesta incorrecta";
+  const estado = acerto
+    ? "Muy bien. Has elegido la mejor decisión."
+    : "La mejor respuesta era: " + pregunta.opciones[pregunta.correcta];
+
+  retro.innerHTML = "";
+
+  const strong = document.createElement("strong");
+  strong.textContent = titulo;
+
+  const p1 = document.createElement("p");
+  p1.textContent = estado;
+
+  const p2 = document.createElement("p");
+  p2.textContent = pregunta.explicacion;
+
+  retro.appendChild(strong);
+  retro.appendChild(p1);
+  retro.appendChild(p2);
+
+  document.getElementById("comprobar").disabled = true;
+  document.getElementById("continuar").disabled = false;
+
+  if (respuestas.length === 16) {
+    document.getElementById("continuar").textContent = "Ver resultados finales →";
+  }
+}
+
+function siguientePregunta() {
+  if (!respondida) return;
+
+  if (preguntaActual < casos[casoActual].preguntas.length - 1) {
+    preguntaActual++;
+    renderizarPregunta();
+    return;
+  }
+
+  if (casoActual < casos.length - 1) {
+    casoActual++;
+    preguntaActual = 0;
+    renderizarPregunta();
+    return;
+  }
+
+  mostrarResultados();
+}
+
+function mostrarResultados() {
+  mostrarPantalla("resultados");
+
+  const total = respuestas.length;
+  const porcentaje = Math.round((correctas / 16) * 100);
+
+  document.getElementById("saludoFinal").textContent =
+    `¡Felicitaciones, ${nombreParticipante}!`;
+
+  document.getElementById("puntuacionFinal").textContent =
+    `${correctas} / 16 puntos`;
+
+  document.getElementById("totalCorrectas").textContent = correctas;
+  document.getElementById("totalIncorrectas").textContent = incorrectas;
+  document.getElementById("porcentajeFinal").textContent = porcentaje + "%";
+
+  let mensaje = "";
+
+  if (porcentaje >= 90) {
+    mensaje = "Excelente desempeño. Demuestras una muy buena comprensión de la dirección administrativa.";
+  } else if (porcentaje >= 70) {
+    mensaje = "Buen trabajo. Comprendes los principios principales y puedes seguir fortaleciendo tus decisiones.";
+  } else if (porcentaje >= 50) {
+    mensaje = "Vas avanzando. Repasa las explicaciones para mejorar tus decisiones como gerente.";
+  } else {
+    mensaje = "Esta práctica te ayudará a aprender. Revisa las respuestas correctas e inténtalo nuevamente.";
+  }
+
+  document.getElementById("mensajeFinal").textContent = mensaje;
+
+  const revision = document.getElementById("revision");
+  revision.innerHTML = "";
+
+  respuestas.forEach((r, indice) => {
+    const caja = document.createElement("div");
+    caja.className = "detalle-respuesta";
+
+    const titulo = document.createElement("strong");
+    titulo.textContent = `${indice + 1}. ${r.caso}`;
+
+    const pregunta = document.createElement("p");
+    pregunta.textContent = r.pregunta;
+
+    const elegida = document.createElement("p");
+    elegida.textContent = "Tu respuesta: " + r.respuestaElegida;
+
+    const estado = document.createElement("p");
+    estado.className = r.acerto ? "bien" : "mal";
+    estado.textContent = r.acerto ? "✓ Correcta" : "✗ Incorrecta";
+
+    caja.appendChild(titulo);
+    caja.appendChild(pregunta);
+    caja.appendChild(elegida);
+    caja.appendChild(estado);
+
+    if (!r.acerto) {
+      const correcta = document.createElement("p");
+      correcta.textContent = "Respuesta correcta: " + r.respuestaCorrecta;
+      caja.appendChild(correcta);
+    }
+
+    const explicacion = document.createElement("p");
+    explicacion.textContent = "Aprendizaje: " + r.explicacion;
+    caja.appendChild(explicacion);
+
+    revision.appendChild(caja);
+  });
+
+  document.getElementById("barraProgreso").style.width = "100%";
+  enviarResultadoAlServidor(porcentaje);
+}
+
+async function enviarResultadoAlServidor(porcentaje) {
+  if (resultadoEnviado) return;
+
+  const resultado = {
+    nombre: nombreParticipante,
+    puntuacion: correctas,
+    maximo: 16,
+    porcentaje: porcentaje,
+    correctas: correctas,
+    incorrectas: incorrectas,
+    respuestas: respuestas,
+    fecha: new Date().toISOString()
+  };
+
+  try {
+    const respuesta = await fetch("/api/resultados", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(resultado)
+    });
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudo guardar el resultado");
+    }
+
+    resultadoEnviado = true;
+    console.log("Resultado enviado correctamente.");
+  } catch (error) {
+    resultadoEnviado = false;
+
+    alert(
+      "No se pudo enviar el resultado al servidor. " +
+      "Comprueba que el servidor esté funcionando y que " +
+      "abriste el simulador desde su dirección web."
+    );
+
+    console.error(error);
+  }
+}
+function reiniciarJuego() {
+  iniciarJuego();
+}
+</script>
+</body>
+</html>
